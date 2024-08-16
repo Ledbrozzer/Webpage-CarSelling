@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Gothic&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;/*tirar-bolinhs d'list*/
+    font-family: "League Gothic", 'Times New Roman', Times, serif;
+}
+body{
+    background-color: #000;
+    color: #fff;
+    font-size: 16px;
+    overflow: hidden;/*make t-scroll->disapear*/
+}
+header{
+    position: fixed;
+    width: 80vw;
+    left: 50%;/*ll be close to themiddle-but-wit-some-spacebetween*/
+    transform: translateX(-50%);/*w/ translateX it'll be dragged close to t other*/
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 600px;
+    gap: 10%;/*so t txt won't be so close t/th-img*/
+    z-index: 2;/*to bring forward(so it won't be behind t-background)*/
+    & img{
+        width: 250px;
+    }
+    & nav{
+        & ul{
+            display: grid;
+            grid-template-columns: repeat(3, 200px);/*creat3columns-> '1fr 1fr 1fr' or userepeat t/creat3tms w/200pxeach*/
+        }
+    }
+}
+section{
+    background-image: radial-gradient(#470964, #791fd3);
+    height: 100vh;
+    position: relative;
+    & .list{
+        width: 70vw;
+        height: 100%;
+        margin: auto;/*ll centralize everything auto*/
+        position: relative;
+        & .item{
+            position: absolute;
+            inset: 0;/*ll set t-(top/left/right/bottom) t/ 0*/
+            & .dino-img{
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);/*ajust on the vertical*/
+                width: 70%;
+                & img{
+                    width: 100%;
+                    transform: rotate(-30deg);
+                }
+                &::before{/*to add a shadow, to t-img-after t-animation*/
+                    content: '';
+                    position: absolute;
+                    background-color: #000;
+                    width: 100%;
+                    height: 100px;
+                    top: 150%;
+                    left: 50px;
+                    border: 50%;
+                    filter: blur(50px);/*'blur(50px)'->'ll make it look kinda smoky*/
+                }                
+            }
+            & .content{
+                position: absolute;
+                right: 100px;
+                width: 70%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;/*if u put end-> 'll be on t right-bottom side- ele é o eixo vertical*/
+                align-items: end;
+                gap: 20px;
+                & .dino-infos{
+                    font-weight: bold;
+                }
+                & h2{
+                    font-size: 8em;
+                    line-height: 1em;
+                    font-family: 'Franklin Gothic Medium', monospace;
+                }
+                & .description{
+                    color: #d9d9d9;
+                    font-size: 12px;
+                    text-align: right;
+                    max-width: 400px;
+                }
+                & .information{
+                    border-radius: 30px;
+                    height: 35px;
+                    width: 120px;
+                    text-transform: uppercase;
+                    border: 2px solid #791fd3;
+                    background-color: #beff1b;
+                    color: #000;
+                    cursor: pointer;
+                    font-weight: bold;
+                }
+            }
+        }
+        &::before{
+            /*after/before -> t-items..*/
+            content: '';/*null, just wanna change t-border*/
+            position: absolute;
+            height: 200px;
+            width: 100%;
+            top: 50%;
+            border-top: 1px solid #fff;/*border-top becuse don't wnna hv t-border on everythng-just t-top*/
+        }
+    }
+    .arrows{
+        width: 70vw;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -25px);/*eixo X e Y*/
+        display: flex;/*display: flex; da permissão de usar o justify-content*/
+        justify-content: space-between;
+        & button:nth-child(1) {
+            & img{
+                transform: scale(-1);
+            }
+        }
+        & button{
+            top: 60%;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            & img{
+                width: 30px;
+                margin-top: 4px;
+                cursor: pointer;
+            }
+            &:hover{
+                background-color: #beff1b;
+            }
+        }
+    }
+    .indicators{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 200px;
+        width: 90vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        gap: 15px;
+        & .number{
+            font-size: 5em;
+        }
+        & ul{
+            display: flex;
+            gap: 10px;
+            & li{
+                width: 50px;
+                height: 5px;
+                background-color: #beff1b;
+                border-radius: 5px;
+                transition: 0.5s;
+            }
+            & .active{
+                background-color: #fff;
+            }
+        }
+    }
+}
+section{
+    & .list{/*create a variable->value is 1 / if someone use->other button->change to '-1' -> to alter t-entrance animation*/
+        --calculation: 1;
+        & .item{/*opacity: 0 -> anyone without t-active..just-throw out'oft-screen*//*(100vw)*/
+            transform: translateX(calc(100vw * var(--calculation)));/*use calc()->bcause it'll have to multiply w/ t-value of t-variable'--calculation'*/
+            transition: 0.5s;/*to drag everything to show it on the screen*/
+            opacity: 0;
+            & .dino-img{
+                & img{
+                    transform: rotate(0);
+                    transition: 0.5s;
+                    transition-delay: 0.3s;/*everything kind has it's owne time, delay the entrance of each part*/
+                }
+                
+            }
+            & .content{
+                & .dino-infos, h2, .description, .information{
+                    transform: translateX(calc(200px * var(--calculation)));/*'ll change t-side in t-JS*//*(200px)*/
+                    transition: 0.7s;/*txt animation takes just-a little more time*/
+                    transition-delay: 0.3s;
+                    opacity: 0;
+                }/*put a 'transition-delay'to each part tht contains texts*/
+                & h2{
+                    transition-delay: 0.5s;
+                }
+                & .description{
+                    transition-delay: 0.7s;
+                }
+                & .information{
+                    transition-delay: 0.9s;
+                }
+            }
+        }
+        & .active{/*in t-active->'ll be t-opposite of the item w/opacity: 0*/
+            transform: translateX(0);
+            transition: 0.5s;
+            opacity: 1;/*just add the animation to the on w/class "active"*/
+            & .dino-img{
+                & img{
+                    transform: rotate(-20deg);
+                }
+            }
+            & .content{
+                & .dino-infos, h2, .description, .information{
+                    transform: translateX(0px);/*it's not 200px->is 0 becaus is his initial state*/
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
